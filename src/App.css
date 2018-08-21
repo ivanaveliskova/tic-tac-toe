@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  color: white;
+  height: 150px;
+  padding: 20px;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.TTT__playing-piece {
+  font-size: 100px;
+  line-height: 1;
+  text-align: center;
+}
+
+.Board {
+  display: grid;
+  grid-row-gap: 16px;
+  grid-template-areas:
+    "currentPlayer currentPlayer currentPlayer"
+    ". board ."
+    "toggle toggle toggle"
+    ". winner ."
+    "reset . .";
+  justify-items: center;
+}
+
+.currentPlayer {
+  grid-area: currentPlayer;
+}
+
+.toggle {
+  display: flex;
+  grid-area: toggle;
+  justify-content: space-evenly;
+  justify-self: stretch;
+}
+
+.toggle div {
+  display: flex;
+}
+
+.toggle label,
+.toggle input {
+  margin: 0 4px;
+}
+
+.winner {
+  grid-area: winner;
+}
+
+.reset {
+  grid-area: reset;
+}
+
+.GameBoard {
+  display: grid;
+  grid-area: board;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.GameBlock {
+  height: 100px;
+  width: 100px;
+}
+
+.GameBlock:nth-child(5) {
+  border: 1px solid black;
+}
+
+.GameBlock:nth-child(2),
+.GameBlock:nth-child(8) {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.GameBlock:nth-child(4),
+.GameBlock:nth-child(6) {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
