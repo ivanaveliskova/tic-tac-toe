@@ -27,9 +27,16 @@ class Board extends Component {
 
   pushToStateArray = (arrayName, value) => {
     this.setState(prevState => {
-      return prevState[arrayName].push(value);
+      const newArray = [...prevState[arrayName], value];
+      return (prevState[arrayName] = newArray);
     });
   };
+
+  // pushToExArray = (value) => {
+  //   this.setState(prevState => {
+  //     return prevState.ex.push(value);
+  //   });
+  // }
 
   setInitialPlayer = value => {
     this.setState({ currentPlayer: value });
@@ -55,9 +62,8 @@ class Board extends Component {
     }
 
     const sorted = this.state[currentPlayer].sort();
-    let winner = false;
-    winningCombinations.forEach(combination => {
-      winner = combination.every(item => {
+    let winner = winningCombinations.some(combination => {
+      return combination.every(item => {
         return sorted.includes(item);
       });
     });
@@ -72,7 +78,14 @@ class Board extends Component {
   };
 
   resetGame = () => {
-    this.setState({ currentPlayer: "", moveNumber: 0, winner: "", tie: false });
+    this.setState({
+      currentPlayer: "",
+      moveNumber: 0,
+      winner: "",
+      tie: false,
+      ex: [],
+      oh: []
+    });
   };
 
   increaseMoveNumber = () => {
@@ -105,6 +118,7 @@ class Board extends Component {
         <GameBoard
           gameBoard={gameBoard}
           currentPlayer={currentPlayer}
+          winner={Boolean(winner.length)}
           addToPlayerArray={this.pushToStateArray}
           increaseMoveNumber={this.increaseMoveNumber}
         />
@@ -124,7 +138,8 @@ class GameBoard extends Component {
       gameBoard,
       currentPlayer,
       addToPlayerArray,
-      increaseMoveNumber
+      increaseMoveNumber,
+      winner
     } = this.props;
 
     const gameBlocks = gameBoard.map((row, index) => {
@@ -133,6 +148,7 @@ class GameBoard extends Component {
           <GameBlock
             key={`${index}-${i}`}
             value={block}
+            winner={winner}
             currentPlayer={currentPlayer}
             addToPlayerArray={addToPlayerArray}
             increaseMoveNumber={increaseMoveNumber}
@@ -161,11 +177,12 @@ class GameBlock extends Component {
       currentPlayer,
       addToPlayerArray,
       value,
-      increaseMoveNumber
+      increaseMoveNumber,
+      winner
     } = this.props;
     const { blockContent } = this.state;
 
-    if (!currentPlayer || blockContent) {
+    if (!currentPlayer || blockContent || winner) {
       return;
     }
     const pieceValue = currentPlayer === "ex" ? "X" : "O";
